@@ -33,35 +33,71 @@ export const mostrarVentaPorId = async (idCliente) =>{
 }
 
 export const mostrarAdministrador = async () => {
-    const [resultado] = await pool.query("SELECT * FROM administrador")
+    const [resultado] = await pool.query("SELECT xa.idAdmin,xa.nomAdmin,xu.nombre,xu.paterno,xu.materno,xu.f_nacimiento,xu.correo,xu.telefono,xu.contrasenia,xu.sexo,xu.f_registro,xu.estado,xu.tipo FROM administrador xa JOIN usuario xu ON xa.idAdmin = xu.idUsuario")
     return resultado;
 }
 
 // INICIO DE LAS INSERCIONES
 
 export const insertarUsuario = async(nombreDeUsuario, nombre, paterno, materno,f_nacimiento, correo, telefono, contrasenia, sexo, estado, tipo) => {
-    await pool.query("INSERT INTO usuario (nombreDeUsuario, nombre, paterno, materno,f_nacimiento, correo, telefono, contrasenia, sexo, estado, tipo) VALUES (?,?,?,?,?,?,?,?,?,?,?)",[nombreDeUsuario, nombre, paterno, materno,f_nacimiento, correo, telefono, contrasenia, sexo, estado, tipo])
+ const [resultado] =await pool.query("INSERT INTO usuario (nombreDeUsuario, nombre, paterno, materno,f_nacimiento, correo, telefono, contrasenia, sexo, estado, tipo) VALUES (?,?,?,?,?,?,?,?,?,?,?)",[nombreDeUsuario, nombre, paterno, materno,f_nacimiento, correo, telefono, contrasenia, sexo, estado, tipo])
+ return resultado;    
 }
 
 export const insertarCliente = async (saldo_pendiente) => {
-    await pool.query("INSERT INTO cliente (saldo_cliente) VALUES (?)",[saldo_pendiente]);
+ const [resultado] = await pool.query("INSERT INTO cliente (saldo_cliente) VALUES (?)",[saldo_pendiente]);
+ return resultado;    
+
 }
 
 export const insertarAdministrador = async (nomAdmin) => {
-    await pool.query("INSERT INTO administrador(nomAdmin) VALUES (?)",[nomAdmin])
+ const [resultado] = await pool.query("INSERT INTO administrador(nomAdmin) VALUES (?)",[nomAdmin]);
+ return resultado;   
+ 
 } 
 
 export const insertarProducto = async (nomProducto, descripcion, cantidad, precio, categoria, idAdmin) => {//no es necesario poner la fecha se pone automáticamente 
-    await pool.query("INSERT INTO  producto (nomProducto, descripcion, cantidad, precio, categoria, idAdmin) VALUES (?,?,?,?,?,?)",[nomProducto, descripcion, cantidad, precio, categoria, idAdmin])
+ const [resultado] =await pool.query("INSERT INTO  producto (nomProducto, descripcion, cantidad, precio, categoria, idAdmin) VALUES (?,?,?,?,?,?)",[nomProducto, descripcion, cantidad, precio, categoria, idAdmin]);
+ return resultado;    
 }
 
 export const insertarVenta = async (cantidad, precio_unitario, monto_cancelado, observaciones, idCliente, idProducto, idAdmin) =>{
-    await pool.query("INSERT INTO compra_a_credito (cantidad, precio_unitario, monto_cancelado, observaciones, idCliente, idProducto, idAdmin) VALUES (?,?,?,?,?,?,?)",[cantidad, precio_unitario, monto_cancelado, observaciones, idCliente, idProducto, idAdmin])
+ const [resultado] =await pool.query("INSERT INTO compra_a_credito (cantidad, precio_unitario, monto_cancelado, observaciones, idCliente, idProducto, idAdmin) VALUES (?,?,?,?,?,?,?)",[cantidad, precio_unitario, monto_cancelado, observaciones, idCliente, idProducto, idAdmin]);
+ return resultado;    
 }
 
 export const insertarHistorialDeAcceso = async(direccion_ip, evento, navegador, idUsuario)=>{
-    await pool.query("INSERT INTO historial_acceso (direccion_ip, evento, navegador, idUsuario) VALUES (?,?,?,?)",[direccion_ip, evento, navegador, idUsuario]);
+    const [resultado] =await pool.query("INSERT INTO historial_acceso (direccion_ip, evento, navegador, idUsuario) VALUES (?,?,?,?)",[direccion_ip, evento, navegador, idUsuario]);
+    return resultado;
+}
+
+//INICIO DE LOS ELIMINARES 
+
+export const eliminarUsuario = async(idUsuario) => {
+ const [resultado] = await pool.query("DELETE FROM usuario WHERE idUsuario = ?",[idUsuario]);
+ return resultado;
+     
+}
+
+export const eliminarProduto = async(idProducto) => {
+ const [resultado] = await pool.query("DELETE FROM producto WHERE idProducto = ?",[idProducto]);
+ return resultado;
+     
 }
 
 //INICIO DE LAS ACTUALIZACIONES
 
+export const editarProducto = async (nomProducto, descripcion, cantidad , precio, categoria, idAdmin,idProducto) =>{
+    const [resultado] = await pool.query("UPDATE producto  SET  nomProducto=?, descripcion=?, cantidad =?, precio=?, categoria=?, idAdmin=? WHERE idProducto=?",[nomProducto, descripcion, cantidad , precio, categoria, idAdmin,idProducto])
+    return resultado;
+}
+
+export const editarAdministrador = async (nomAdmin,idAdmin)=>{
+    const [resultado] = await pool.query("UPDATE administrador SET nomAdmin = ? WHERE idAdmin=?",[nomAdmin,idAdmin]);
+    return resultado;
+}
+
+export const editarUsuario = async (nombreDeUsuario, nombre, paterno, materno,f_nacimiento, correo, telefono, contrasenia, sexo,f_registro, estado, tipo,idUsuario)=>{
+    const [resultado] = await pool.query("UPDATE usuario SET nombreDeUsuario=?, nombre=?, paterno=?, materno=?,f_nacimiento=?, correo=?, telefono=?, contrasenia=?, sexo=?,f_registro=?, estado=?, tipo=? WHERE idUsuario=?",[nombreDeUsuario, nombre, paterno, materno,f_nacimiento, correo, telefono, contrasenia, sexo,f_registro, estado, tipo,idUsuario]);
+    return resultado;
+}

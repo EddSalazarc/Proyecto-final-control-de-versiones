@@ -1,8 +1,8 @@
 <template>
         <img src="../../../imagenes/logoFinal.webp" alt="">
-        <el-button class="agregar" type="warning" plain>AGREGAR</el-button>
+        <!-- <el-button class="agregar" type="warning" plain>AGREGAR</el-button> -->
 
-        <h1>COMPRAS</h1>
+        <h1>REGISTRO DE TODAS LAS VENTAS</h1>
     <section>
 
         <el-table :data="ventas"  style="width: 100%">
@@ -14,13 +14,7 @@
           <el-table-column prop="observaciones" label="OBSERVACIONES" width="186" />
           <el-table-column prop="idCliente" label="ID CLIENTE" width="186" />
           <el-table-column prop="idProducto" label="ID producto" width="186" />
-          <el-table-column prop="" label="OPERACIONES" width="180">
-              <template #default="scoped">
-                  <el-button type="primary" :icon="Edit" circle />
-                  <el-button type="danger" :icon="Delete" circle />
-              </template>
-          </el-table-column>
-
+         
      
         </el-table>
     </section>
@@ -70,11 +64,11 @@ h1{
     font-size: 50px;
     color:#7a5c38;  
     text-transform: uppercase;
-    margin-left:580px;
+    margin-left:380px;
 }
 section{
-    width:1459px;
-    margin-left:50px;
+    width:1279px;
+    margin-left:130px;
     height: 100%;
     top: 40px;
     background-color: red;

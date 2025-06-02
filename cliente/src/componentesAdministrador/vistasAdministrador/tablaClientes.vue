@@ -1,6 +1,8 @@
 <template>
     <img src="../../../imagenes/logoFinal.webp" alt="">
-    <el-button class="agregar" type="warning" plain>AGREGAR</el-button>
+    <!-- <el-button class="agregar" type="warning" plain>AGREGAR</el-button> -->
+    <!-- <el-button class="eliminar" type="danger" plain  @click="dialogFormVisible = true">ELIMINAR CLIENTE</el-button> -->
+
         <h1>Clientes registrados</h1>
 
     <section>
@@ -8,12 +10,7 @@
           <el-table-column prop="idCliente" label="ID" width="40" />
           <el-table-column prop="nombreDeUsuario" label="NOMBRE DE USUARIO" width="180" />
           <el-table-column prop="saldo_pendiente" label="SALDO PENDIENTE" width="180" />
-          <el-table-column prop="" label="OPERACIONES" width="180" >
-                <template #default="scoped">
-                  <el-button type="primary" :icon="Edit" circle />
-                  <el-button type="danger" :icon="Delete" circle />
-                </template>
-          </el-table-column>
+        
 
           <el-table-column prop="" label="GESTIONAR VENTAS" width="180" >
             <template #default="scoped">
@@ -26,10 +23,22 @@
 
         </el-table>
     </section>
+   
 
 </template>
 
 <script setup>
+
+
+
+//INICIO DEL ELIMINAR CLIENTE
+const idUsuario = ref('');
+const dialogFormVisible = ref(false);
+
+
+//FIN DEL ELIMINAR CLIENTE
+
+
 
 function direccion(variable,id,nombre){
     // return `/${variable}/${id}`
@@ -81,11 +90,12 @@ import { routerViewLocationKey } from 'vue-router';
 
 
 <style scoped>
+
 .agregar{
     position: absolute;
-    right: 83px;
+    right: 70px;
     top:150px;
-    width: 130px;
+    width: 150px;
 }
 img{
     position: absolute;
@@ -102,8 +112,8 @@ h1{
     margin-left: 450px;
 }
 section{
-    width: 760px;
-    margin-left:380px;
+    width: 580px;
+    margin-left:480px;
     height: auto    ;
     top: 40px;
 }

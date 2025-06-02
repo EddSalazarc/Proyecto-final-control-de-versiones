@@ -1,6 +1,6 @@
 <template>
     <img src="../../../imagenes/logoFinal.webp" alt="">
-    <el-button class="agregar" type="danger" plain>ELIMINAR USUARIO</el-button>
+    <el-button class="agregar" type="danger" plain  @click="dialogFormVisible = true">ELIMINAR USUARIO</el-button>
 
     <section>
         <h1>Usuarios registrados</h1>
@@ -21,12 +21,50 @@
         </el-table>
     </section>
 
+    <!-- MODAL PARA ELIMINAR POR ID -->
+     
+  <el-dialog v-model="dialogFormVisible" title="INTRODUZCA EL ID DEL USUARIO A ELIMINAR" width="500">
+    <el-form>
+      <el-form-item label="ID DEL USUARIO">
+        <el-input v-model="idUsuario"/>
+      </el-form-item>
+    </el-form>
+    
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">cancelar</el-button>
+        <el-button type="primary"  @click="eliminarUsuario()">
+          confirmar
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
+
 </template>
 
 <script setup>
 
+//inicio script para el eliminado
+const idUsuario = ref('');
+
+const dialogFormVisible = ref(false);
+
+const eliminarUsuario = async () =>{
+  try{
+    await eliminarUsuarios(idUsuario.value);
+    dialogFormVisible.value = false;
+    window.location.reload();
+    idUsuario.value = '';
+  }catch(error){
+    alert("error a la hora de eliminar")
+  }
+
+}
+//fin del script para el eliminado
+
+
 import { onMounted,ref} from 'vue';
-import { listadoUsuarios } from '@/apis/api';
+import { listadoUsuarios,eliminarUsuarios } from '@/apis/api';
 
 const usuarios = ref([]);
 

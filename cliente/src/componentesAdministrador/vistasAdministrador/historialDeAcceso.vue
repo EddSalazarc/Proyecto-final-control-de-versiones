@@ -9,8 +9,6 @@
           <el-table-column prop="evento" label="EVENTO" width="180" />
           <el-table-column prop="navegador" label="NAVEGADOR" width="180" />
           <el-table-column prop="nombreDeUsuario" label="NOMBRE DE USUARIO" width="180" />
-       
-    
         </el-table>
     </section>
 

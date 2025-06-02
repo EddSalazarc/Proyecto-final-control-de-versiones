@@ -125,6 +125,7 @@ export const agregarVentas = async(req,res) => {
     }
 }
 
+
 export const agregarHistoriales = async(req,res) => {
     try{
         const {direccion_ip, evento, navegador, idUsuario}=req.body;
@@ -136,21 +137,70 @@ export const agregarHistoriales = async(req,res) => {
     }
 }
 
+//INICIO DE LAS ELIMINACIONES
 
-/*
-export const actualizarEstudiantesController = async(req,res) => {
+export const eliminarUsuarios = async(req,res) =>{
     try{
-        //console.log("ojo que te ",req.body);
-        const {id_estudiante} = req.params;//porque el id siempre viaja por la URL
-        const {nombre,paterno,materno,nota,id_proyecto} = req.body;
-        const respuesta = await Registro.actualizarEstudiante(nombre,paterno,materno,nota,id_proyecto,id_estudiante);
-        res.status(200).json(respuesta);
-        
-    }catch(error){  
-        res.status(500).json({message:'Error atrapado mientras se actualizaba el estudiante (controlador)',error:error.message});
+        const {idUsuario} = req.params;
+        const respuesta = await registroAdministrador.eliminarUsuario(idUsuario);
+        res.status(200).json(respuesta);    
+
+    }catch(error){
+        res.status(500).json({message:'Error a la hora de eliminar a los  usuarios (controlador)'});
     }
 }
 
+export const eliminarProductos = async(req,res) =>{
+    try{
+        const {idProducto} = req.params;
+        const respuesta = await registroAdministrador.eliminarProduto(idProducto);
+        res.status(200).json(respuesta);    
+
+    }catch(error){
+        res.status(500).json({message:'Error a la hora de eliminar a los  productos (controlador)'});
+    }
+}
+
+//INICIO DE LAS EDICIONES
+export const actualizarProducto = async(req,res) => {
+    try{
+        const {idProducto} = req.params;
+        const {nomProducto, descripcion, cantidad , precio, categoria, idAdmin} = req.body;
+        const respuesta = await registroAdministrador.editarProducto(nomProducto, descripcion, cantidad , precio, categoria, idAdmin,idProducto);
+        res.status(200).json(respuesta);
+        
+    }catch(error){  
+        res.status(500).json({message:'Error atrapado mientras se actualizaba el producto (controlador)',error:error.message});
+    }
+}
+
+export const actualizarAdministrador = async(req,res) => {
+    try{
+        const {idAdmin} = req.params;
+        const {nomAdmin} = req.body;
+        const respuesta = await registroAdministrador.editarAdministrador(nomAdmin, idAdmin);
+        res.status(200).json(respuesta);
+        
+    }catch(error){  
+        res.status(500).json({message:'Error atrapado mientras se actualizaba el administrador (controlador)',error:error.message});
+    }
+}
+
+export const actualizarUsuario = async(req,res) => {
+    try{
+        const {idUsuario} = req.params;
+        const {nombreDeUsuario, nombre, paterno, materno,f_nacimiento, correo, telefono, contrasenia, sexo,f_registro, estado, tipo} = req.body;
+        const respuesta = await registroAdministrador.editarUsuario(nombreDeUsuario, nombre, paterno, materno,f_nacimiento, correo, telefono, contrasenia, sexo,f_registro, estado, tipo,idUsuario);
+        res.status(200).json(respuesta);
+        
+    }catch(error){  
+        res.status(500).json({message:'Error atrapado mientras se actualizaba el usuario (controlador)',error:error.message});
+    }
+}
+
+
+
+/*
 export const eliminarEstudiantesController = async (req,res) => {
     try{
         const {id_estudiante} = req.params;
