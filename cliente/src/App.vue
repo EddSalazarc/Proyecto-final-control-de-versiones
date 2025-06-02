@@ -1,7 +1,7 @@
 <template>
   <section>
 
-    <!-- <login></login>  -->
+    <!-- <login></login> -->
     <NavegadorDelAdministrador></NavegadorDelAdministrador>
     <RouterView></RouterView>
   </section>

@@ -45,6 +45,17 @@ export const listadoVentas = async (req,res) =>{
     }
 }
 
+export const listadoVentasPorId = async (req,res) => {
+
+    try{
+        const {idCliente} = req.params;
+        const ventas = await registroAdministrador.mostrarVentaPorId(idCliente);
+        res.status(200).json(ventas);
+    }catch(error){
+        res.status(500).json({message:`Error a la hora de mostrar las ventas por id (controlador)${req.body} `,error:error.message});
+    }
+}
+
 export const listadoHistorialDeAccesos = async (req,res) =>{
     try{
         const historial_accesos = await registroAdministrador.mostrarHistorialDeAcceso();

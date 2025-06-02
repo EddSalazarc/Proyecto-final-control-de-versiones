@@ -1,0 +1,38 @@
+# Dependencias
+/node_modules
+/.pnp
+.pnp.js
+
+# Entorno de desarrollo
+/.env.local
+/.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor y IDE
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Archivos de compilación
+/dist
+/.output
+
+# Misc
+.DS_Store
+*.local
+
+# Archivos de configuración local
+/coverage
+/.cache
+
+# Archivos de Vue CLI
+/.vscode
+/.history

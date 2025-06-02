@@ -6,6 +6,8 @@ import TablaFianzas from "@/componentesAdministrador/vistasAdministrador/tablaFi
 import ConfiguracionCuenta from "@/componentesAdministrador/vistasAdministrador/configuracionCuenta.vue";
 import CerrarSesion from "@/componentesAdministrador/vistasAdministrador/cerrarSesion.vue";
 import historialDeAcceso from "@/componentesAdministrador/vistasAdministrador/historialDeAcceso.vue";
+import TablaClientes from "@/componentesAdministrador/vistasAdministrador/tablaClientes.vue";
+import TablaVentas from "@/componentesAdministrador/vistasAdministrador/tablaVentasPorUsuario.vue";
 const routes = [
     {
         path:'/',component:inicio,
@@ -27,6 +29,12 @@ const routes = [
     },
     {
         path:'/historial',component:historialDeAcceso,
+    },
+    {
+        path:'/tablaClientes',component:TablaClientes,
+    },
+    {
+        path:'/tablaVentas/:id',name:'tablaVentas',component:TablaVentas,
     }
 ]
 

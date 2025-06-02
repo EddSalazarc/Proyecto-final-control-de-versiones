@@ -2,33 +2,35 @@
   <header>
     <img class="imagen-logo" src="../../imagenes/logoFinal.webp" alt="">
     <h1>EL PADRINO</h1>
-       <n-button class="boton-registrarse">REGISTRARSE</n-button>
+       <el-button class="boton-registrarse">REGISTRARSE</el-button>
   </header>
   <section>
 
     <img class="imagen-centro" src="../../imagenes/imagenLogin.webp" alt="">
-    <n-form  ref="" :model="x" :rules="x">
-      <article>
-        <n-form-item path="age" label="Usuario">
-          <n-input  class="inputs" placeholder="" v-model:value="x" />
-        </n-form-item>
+        <article>
+          
+      <el-form  label-width="auto" style="max-width: 600px">
 
-        <n-form-item path="xx" label="Contraseña">
-          <n-input  class="inputs" placeholder="" v-model:value="xx"  type="password" />
-        </n-form-item>
+        <el-form-item path="age" label="Usuario">
+          <el-input  class="inputs" placeholder="" v-model:value="x" />
+        </el-form-item>
+
+        <el-form-item path="xx" label="Contraseña">
+          <el-input  class="inputs" placeholder="" v-model:value="xx"  type="password" />
+        </el-form-item>
 
        
-        <n-form-item path="xx" label="codigo captcha">
-          <n-input class="inputs" placeholder="" v-model:value="xx"  type="text" />
-        </n-form-item>
+        <el-form-item path="xx" label="codigo captcha">
+          <el-input class="inputs" placeholder="" v-model:value="xx"  type="text" />
+        </el-form-item>
 
-        <n-button class="boton" strong secondary type="warning" >
+        <el-button class="boton" strong secondary type="warning" >
             iniciar sesion      
-        </n-button>
+        </el-button>
         
-      </article>
-          
-    </n-form>
+    </el-form>
+    </article>
+
   </section>
 </template>
 
@@ -103,6 +105,7 @@ article{
   height: 300px;
   top:90px;
   left: 398px;
+  background-color: red;
 }
 .boton{
   color:#716040;
