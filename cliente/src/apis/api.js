@@ -1,6 +1,15 @@
 // AQUÍ VAMOS A RECIBIR LOS DATOS DEL BACKEND
 import axios from 'axios'; 
 
+// Configuración global de axios para incluir el token en las peticiones
+axios.interceptors.request.use(config => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 const apiUsuarios='http://localhost:3000/api/usuarios';
 
 export const listadoUsuarios = async () => {
@@ -8,7 +17,7 @@ export const listadoUsuarios = async () => {
         const respuesta = await axios.get(apiUsuarios);
         return respuesta.data;
     }catch(error){
-        console.error(error);
+        console.error("erroren el api: ",error);
     }
 }
 
@@ -30,10 +39,31 @@ export const actualizarUsuario = async (usuario) =>{
     }
 }
 
+export const listadoIdUsuario = async (nombreDeUsuario) => {
+    try{
+        const respuesta = await axios.get(`${apiUsuarios}/${nombreDeUsuario}/id`);
+        return respuesta.data;
+    }catch(error){
+        console.error(error);
+    }
+}
+
+
+
 const apiClientes='http://localhost:3000/api/clientes';
 export const listadoClientes = async () => {
     try{
         const respuesta = await axios.get(apiClientes);
+        return respuesta.data;
+    }catch(error){
+        console.error(error);
+    }
+}
+
+export const agregarCliente = async (cliente) =>{
+    try{
+        const respuesta = await axios.post(apiClientes,cliente);
+        console.log(respuesta);
         return respuesta.data;
     }catch(error){
         console.error(error);
@@ -125,5 +155,48 @@ export const actualizarAdministrador = async (administrador) =>{
         return respuesta.data;
     }catch(error){
         console.error(error);
+    }
+}
+
+const apiAuth = 'http://localhost:3000/api/auth';
+
+export const iniciarSesion = async (credenciales) => {
+    try {
+        const respuesta = await axios.post(`${apiAuth}/login`, credenciales);
+        const { token, tipo } = respuesta.data;
+        // Guardar el token en localStorage
+        localStorage.setItem('token', token);
+        
+        return { tipo, mensaje: respuesta.data.mensaje };
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+            throw new Error('Usuario o contraseña incorrectos');
+        }
+        throw new Error('Error al iniciar sesión. Por favor intente nuevamente.');
+    }
+}
+
+export const verificarCaptcha = async (codigo) => {
+    try {
+        const respuesta = await axios.post(`${apiAuth}/verificar-captcha`, { codigo });
+        return respuesta.data;
+    } catch (error) {
+        throw error.response ? error.response.data : error;
+    }
+}
+
+export const cerrarSesion = async () => {
+    try {
+        const respuesta = await axios.post(`${apiAuth}/logout`);
+        // Eliminar el token del localStorage
+        localStorage.removeItem('token');
+        return respuesta.data;
+    } catch (error) {
+        if (error.response && error.response.status === 403) {
+            // Si el token ya no es válido, solo eliminamos el token local
+            localStorage.removeItem('token');
+            return { mensaje: 'Sesión cerrada exitosamente' };
+        }
+        throw new Error('Error al cerrar sesión');
     }
 }

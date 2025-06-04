@@ -8,6 +8,7 @@
           <el-table-column prop="direccion_ip" label="DIRECCION IP" width="180" />
           <el-table-column prop="evento" label="EVENTO" width="180" />
           <el-table-column prop="navegador" label="NAVEGADOR" width="180" />
+          <el-table-column :formatter="formatearFecha" prop="fecha" label="FECHA" width="180" />
           <el-table-column prop="nombreDeUsuario" label="NOMBRE DE USUARIO" width="180" />
         </el-table>
     </section>
@@ -15,6 +16,18 @@
 </template>
 
 <script setup>
+const formatearFecha = (row, column, cellValue) => {
+  if (!cellValue) return '';
+  const fecha = new Date(cellValue);
+  return fecha.toLocaleString('es-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+}
 
 import { onMounted,ref} from 'vue';
 import { listadoHistoriales } from '@/apis/api';
@@ -57,11 +70,11 @@ h1{
     font-size: 50px;
     color:#7a5c38;  
     text-transform: uppercase;
-    margin-left: 450px;
+    margin-left: 470px;
 }
 section{
-    width: 760px;
-    margin-left:350px;
+    width: 940px;
+    margin-left:330px;
     height: auto    ;
     top: 40px;
 }

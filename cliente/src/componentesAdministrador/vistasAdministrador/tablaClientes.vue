@@ -1,6 +1,6 @@
 <template>
     <img src="../../../imagenes/logoFinal.webp" alt="">
-    <!-- <el-button class="agregar" type="warning" plain>AGREGAR</el-button> -->
+    <!-- <el-button @click="modalAgregacion = true" class="agregar" type="warning" plain>AGREGAR</el-button> -->
     <!-- <el-button class="eliminar" type="danger" plain  @click="dialogFormVisible = true">ELIMINAR CLIENTE</el-button> -->
 
         <h1>Clientes registrados</h1>
@@ -11,7 +11,6 @@
           <el-table-column prop="nombreDeUsuario" label="NOMBRE DE USUARIO" width="180" />
           <el-table-column prop="saldo_pendiente" label="SALDO PENDIENTE" width="180" />
         
-
           <el-table-column prop="" label="GESTIONAR VENTAS" width="180" >
             <template #default="scoped">
                 <RouterLink  :to="direccion('tablaVentas',scoped.row.idCliente,scoped.row.nombreDeUsuario)">
@@ -23,17 +22,68 @@
 
         </el-table>
     </section>
-   
+
+  
+  <el-dialog v-model="modalAgregacion" title="DATOS DEL CLIENTE" width="500">
+    
+    <el-form :model="formAgregar" @submit.prevent="enviarProducto()">
+      <el-form-item label="saldo_pendiente: " :label-width="formLabelWidth">
+        <el-input  v-model="formAgregar.saldo_pendiente" autocomplete="off" />
+      </el-form-item>
+
+      <div class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" native-type="submit">  <!--AQUI CAMBIAMOS(pasado) DE POSICION LOS BOTONES
+            PUESTO QUE NO ESTABAN DENTRO DE NUESTO  @submit.prevent="EnviarEstudiante()"-->
+          Confirm
+        </el-button>
+      </div>
+
+    
+    </el-form>
+ 
+  </el-dialog>
+
+
+
 
 </template>
 
 <script setup>
 
+// En el script
+const dialogFormVisible = ref(false);
+
+const formAgregar = reactive({
+  saldo_pendiente: '',
+
+})
+
+
+const modalAgregacion= ref(false);
+
+const enviarProducto = async () =>{
+    try{
+        const objeto={
+            saldo_pendiente : parseFloat(formAgregar.saldo_pendiente),
+        }
+        console.log("objetos a enviar a la bd",objeto);
+        
+        const respuesta = await agregarCliente(objeto);
+        modalAgregacion.value=false;
+        tablaClientes();
+    }
+    catch(error){
+        alert("error en el frontend a la hora de agregar\n",error);
+
+    }   
+}
+
+
 
 
 //INICIO DEL ELIMINAR CLIENTE
 const idUsuario = ref('');
-const dialogFormVisible = ref(false);
 
 
 //FIN DEL ELIMINAR CLIENTE
@@ -55,8 +105,8 @@ function direccion(variable,id,nombre){
 
 }
 
-import { onMounted,ref} from 'vue';
-import { listadoClientes } from '@/apis/api';
+import { onMounted,reactive,ref} from 'vue';
+import { agregarCliente, listadoClientes } from '@/apis/api';
 
 
 

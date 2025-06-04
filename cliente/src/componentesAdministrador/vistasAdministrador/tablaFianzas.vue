@@ -7,7 +7,7 @@
 
         <el-table :data="ventas"  style="width: 100%">
           <el-table-column prop="idCompra" label="ID" width="40" />
-          <el-table-column prop="fecha" label="FECHA" width="190" />
+          <el-table-column :formatter="formatearFecha" prop="fecha" label="FECHA" width="190" />
           <el-table-column prop="cantidad" label="CANTIDAD" width="180" />
           <el-table-column prop="precio_unitario" label="PRECIO UNITARIO" width="140" />
           <el-table-column prop="monto_cancelado" label="MONTO CANCELADO" width="170" />
@@ -22,6 +22,18 @@
 </template>
 
 <script setup>
+const formatearFecha = (row, column, cellValue) => {
+   if (!cellValue) return '';
+  const fecha = new Date(cellValue);
+  return fecha.toLocaleString('es-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+}
 
 import { onMounted,ref} from 'vue';
 import { listadoVentas } from '@/apis/api';

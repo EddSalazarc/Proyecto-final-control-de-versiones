@@ -44,7 +44,14 @@ export const listadoVentas = async (req,res) =>{
         res.status(500).json({message:'Error a la hora de mostrar las ventas (controlador)',error:error.message});
     }
 }
-
+export const listadoHistorialDeAccesos = async (req,res) =>{
+    try{
+        const historial_accesos = await registroAdministrador.mostrarHistorialDeAcceso();
+        res.status(200).json(historial_accesos);
+    }catch(error){
+        res.status(500).json({message:'Error a la hora de mostrar los historiales accesos (controlador)',error:error.message});
+    }
+}
 export const listadoVentasPorId = async (req,res) => {
 
     try{
@@ -56,12 +63,16 @@ export const listadoVentasPorId = async (req,res) => {
     }
 }
 
-export const listadoHistorialDeAccesos = async (req,res) =>{
+
+
+export const listadoIdUsuarios = async (req,res)=>{
     try{
-        const historial_accesos = await registroAdministrador.mostrarHistorialDeAcceso();
-        res.status(200).json(historial_accesos);
+        const {nombreDeUsuario} = req.params;
+        const idUsuarios = await registroAdministrador.mostrarIdUsuario(nombreDeUsuario);
+        res.status(200).json(idUsuarios);
     }catch(error){
-        res.status(500).json({message:'Error a la hora de mostrar los historiales accesos (controlador)',error:error.message});
+        res.status(500).json({message:`Error a la hora de mostrar los ides de usuarios(controlador)`,error:error.message});
+
     }
 }
 

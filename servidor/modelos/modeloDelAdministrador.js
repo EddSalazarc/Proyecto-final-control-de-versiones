@@ -18,7 +18,7 @@ export const mostrarClientes = async () => {
 }
 
 export const mostrarHistorialDeAcceso = async () =>{
-    const [resultado] = await pool.query("SELECT xh.idLogin, xh.direccion_ip, xh.evento, xh.navegador, xu.nombreDeUsuario FROM usuario xu JOIN historial_acceso xh ON xh.idUsuario = xu.idUsuario")
+    const [resultado] = await pool.query("SELECT xh.idLogin, xh.direccion_ip, xh.evento, xh.navegador,xh.fecha, xu.nombreDeUsuario FROM usuario xu JOIN historial_acceso xh ON xh.idUsuario = xu.idUsuario")
     return resultado;
 }
 
@@ -28,7 +28,12 @@ export const mostrarVenta = async () => {
 }
 
 export const mostrarVentaPorId = async (idCliente) =>{
-    const [resultado] = await pool.query("SELECT * FROM compra_a_credito WHERE idCliente = ?",[idCliente]);
+    const [resultado] = await pool.query("SELECT xc.idCompra,xc.fecha,xp.nomProducto,xp.descripcion,xc.cantidad,xc.precio_unitario,xc.monto_cancelado,xc.observaciones FROM compra_a_credito xc JOIN producto xp ON xc.idProducto=xp.idProducto and xc.idCliente=?",[idCliente]);
+    return resultado;
+}
+
+export const mostrarIdUsuario = async (nombreDeUsuario) =>{
+    const [resultado] = await pool.query("SELECT idUsuario FROM usuario WHERE nombreDeUsuario = ?",[nombreDeUsuario]);
     return resultado;
 }
 

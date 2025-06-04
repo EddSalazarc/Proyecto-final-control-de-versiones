@@ -1,18 +1,25 @@
 <template>
   <section>
-
-    <!-- <login></login> -->
-    <NavegadorDelAdministrador></NavegadorDelAdministrador>
-    <RouterView></RouterView>
+    <NavegadorDelAdministrador v-if="mostrarNav" />
+    <RouterView />
   </section>
 </template>
 
 <script setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import NavegadorDelAdministrador from './componentesAdministrador/navegadorDelAdministrador.vue';
-import login from './navegadorPrincipal/login.vue';
-NavegadorDelAdministrador
+
+const route = useRoute();
+
+const mostrarNav = computed(() => {
+  return route.path !== '/login' && route.path !== '/registro';
+});
+
 </script>
 
 <style scoped>
-
+section {
+  min-height: 100vh;
+}
 </style>

@@ -19,12 +19,9 @@
           <el-table-column prop="tipo" label="TIPO" width="180" />
           <el-table-column prop="" label="OPERACIONES" width="180">
               <template #default="scoped">
-                <!--  @click="mostrarModalDeEdicion(scoped.row)"             
- @click="eliminacionDelProducto(scoped.row.idProducto)"  -->
                   <el-button type="primary" @click="mostrarModalDeEdicion(scoped.row)"  :icon="Edit" circle />
               </template>
           </el-table-column>
-
         </el-table>
      </section>
     
@@ -32,9 +29,7 @@
 <!-- // EL MODAL DE EDICION-->
   <el-dialog  v-model="dialogFormVisible" title="Edici&oacute;n de cuenta" width="500">
       <el-form :model="form">
-
-
-          <el-form-item label="descripcion:" :label-width="formLabelWidth">
+          <el-form-item label="nombre admin:" :label-width="formLabelWidth">
             <el-input v-model="form.nomAdmin" autocomplete="off" />
           </el-form-item>
 
@@ -83,151 +78,154 @@
           </el-form-item>                           
             <div class="dialog-footer">
               <el-button @click="dialogFormVisible = false">Cancel</el-button>
-              <el-button type="primary" native-type="submit" @click="enviarProductoActualizado()">  <!--AQUI CAMBIAMOS(pasado) DE POSICION LOS BOTONES
-                  PUESTO QUE NO ESTABAN DENTRO DE NUESTO  @submit.prevent="EnviarEstudiante()"-->
+              <el-button type="primary" @click="enviarProductoActualizado">
                 Confirm
               </el-button>
             </div>
       </el-form>
   </el-dialog> 
 </template>
+
 <script setup>
-// //inicio del script del modal de edicion
-const formLabelWidth = '150px'
+import { onMounted, reactive, ref } from 'vue';
+import { actualizarAdministrador, actualizarUsuario, listadoAdministradores } from '@/apis/api';
+import { Edit } from '@element-plus/icons-vue';
+
+const formLabelWidth = '150px';
 const dialogFormVisible = ref(false);
+const administrador = ref([]);
+
 const form = reactive({
-  idAdmin:null,
+  idAdmin: null,
   nomAdmin: '',
   nombre: '',
-  paterno:'',
-  materno:'',
-  f_nacimiento:'',
-  correo:'',
-  telefono:'',
-  contrasenia:'',
-  sexo:'',
-  f_registro:'',
-  estado:'',
-  tipo:'',
-  idUsuario:'',
-  nombreDeUsuario:'',
-})
+  paterno: '',
+  materno: '',
+  f_nacimiento: '',
+  correo: '',
+  telefono: '',
+  contrasenia: '',
+  sexo: '',
+  f_registro: '',
+  estado: '',
+  tipo: '',
+  idUsuario: '',
+  nombreDeUsuario: ''
+});
 
-// //MOSTRAR EL MODAL DE EDICION
- const mostrarModalDeEdicion = async(objeto)=>{
-   try{
-     form.idAdmin = objeto.idAdmin;
-     form.nomAdmin = objeto.nomAdmin;
-     form.nombre = objeto.nombre;
-     form.paterno = objeto.paterno; 
-     form.materno = objeto.materno;
-     form.f_nacimiento = objeto.f_nacimiento;
-     form.correo = objeto.correo;
-     form.telefono = objeto.telefono;
-     form.contrasenia = objeto.contrasenia;
-     form.sexo = objeto.sexo;
-     form.f_registro = objeto.f_registro;
-     form.estado = objeto.estado;
-     form.tipo = objeto.tipo;
-     form.idUsuario = objeto.idUsuario;
-     form.nombreDeUsuario = objeto.nombreDeUsuario;
-     dialogFormVisible.value = true;
-   }catch(error){
-     alert(error);
-   }
- }
-
-const enviarProductoActualizado = async()=>{
-  try{
-    const objetoAdmin={
-        idAdmin : form.idAdmin,
-        nomAdmin: form.nomAdmin,
-    }
-    const objeto = {
-     idUsuario : form.idUsuario,
-     nombreDeUsuario : form.nombreDeUsuario,
-     nombre : form.nombre,
-     paterno : form.paterno,
-     materno : form.materno,
-     f_nacimiento : form.f_nacimiento,// ? new Date(form.f_nacimiento).toISOString().split('T')[0] : null,
-     correo : form.correo,
-     telefono : form.telefono,
-     contrasenia : form.contrasenia,
-     sexo : form.sexo,
-     f_registro : form.f_registro,// ? new Date(form.f_registro).toISOString().split('T')[0] : null,
-     estado : form.estado,
-     tipo : form.tipo,
-    }
-    
-    await actualizarAdministrador(objetoAdmin);
-    await actualizarUsuario(objeto);
-    console.log(objeto)
-
-    dialogFormVisible.value = false;
-  }catch(error){
+const mostrarModalDeEdicion = async(objeto) => {
+  try {
+    form.idAdmin = objeto.idAdmin;
+    form.nomAdmin = objeto.nomAdmin;
+    form.nombre = objeto.nombre;
+    form.paterno = objeto.paterno; 
+    form.materno = objeto.materno;
+    form.f_nacimiento = objeto.f_nacimiento;
+    form.correo = objeto.correo;
+    form.telefono = objeto.telefono;
+    form.contrasenia = objeto.contrasenia;
+    form.sexo = objeto.sexo;
+    form.f_registro = objeto.f_registro;
+    form.estado = objeto.estado;
+    form.tipo = objeto.tipo;
+    form.idUsuario = objeto.idUsuario;
+    form.nombreDeUsuario = objeto.nombreDeUsuario;
+    dialogFormVisible.value = true;
+  } catch(error) {
     alert(error);
   }
 }
 
-//fin del modal de edicion 
+const enviarProductoActualizado = async() => {
+  try {
+    const objetoAdmin = {
+      idAdmin: form.idAdmin,
+      nomAdmin: form.nomAdmin
+    };
 
+    const objeto = {
+      idUsuario: form.idUsuario,
+      nombreDeUsuario: form.nombreDeUsuario,
+      nombre: form.nombre,
+      paterno: form.paterno,
+      materno: form.materno,
+      f_nacimiento: form.f_nacimiento,
+      correo: form.correo,
+      telefono: form.telefono,
+      contrasenia: form.contrasenia,
+      sexo: form.sexo,
+      f_registro: form.f_registro,
+      estado: form.estado,
+      tipo: form.tipo
+    };
+    
+    await actualizarAdministrador(objetoAdmin);
+    await actualizarUsuario(objeto);
+    
+    dialogFormVisible.value = false;
+    tablaAdministrador();
+  } catch(error) {
+    alert(error);
+  }
+}
 
 const formatearFecha = (row, column, cellValue) => {
-  if (!cellValue) return '';
+   if (!cellValue) return '';
   const fecha = new Date(cellValue);
-  return fecha.toLocaleDateString('es-ES'); // "2/6/2025"
+  return fecha.toLocaleString('es-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
 }
-//INICIO DEL SCRIPT DE MOSTRAR
-import { onMounted,reactive,ref} from 'vue';
-import { actualizarAdministrador, actualizarUsuario, listadoAdministradores } from '@/apis/api';
 
-const administrador = ref([]);
-
-const tablaAdministrador = async () =>{
-    try{
-        const resultado = await listadoAdministradores();
-        administrador.value=resultado;
-    }catch(error){
-        console.error(error);
-    }
+const tablaAdministrador = async() => {
+  try {
+    const resultado = await listadoAdministradores();
+    administrador.value = resultado;
+  } catch(error) {
+    console.error(error);
+  }
 }
+
 onMounted(tablaAdministrador);
-defineExpose({tablaAdministrador});
-import {
-  Delete,
-  Edit,
-} from '@element-plus/icons-vue'
-
-//FIN DEL SCRIP DE MOSTRAR
+defineExpose({ tablaAdministrador });
 </script>
-<style scoped>
 
-.agregar{
-    position: absolute;
-    right: 83px;
-    top:150px;
-    width: 130px;
+<style scoped>
+.agregar {
+  position: absolute;
+  right: 83px;
+  top: 150px;
+  width: 130px;
 }
-img{
-    position: absolute;
-    width: 155px;
-    right:70px;
-    top:-30px;
+
+img {
+  position: absolute;
+  width: 155px;
+  right: 70px;
+  top: -30px;
 }
-h1{
-    font-size: 50px;
-    color:#7a5c38;  
-    text-transform: uppercase;
-    margin-left:580px;
+
+h1 {
+  font-size: 50px;
+  color: #7a5c38;  
+  text-transform: uppercase;
+  margin-left: 580px;
 }
-section{
-    width:1418px;
-    margin-left:50px;
-    height: 100%;
-    top: 40px;
-    background-color: red;
+
+section {
+  width: 1418px;
+  margin-left: 50px;
+  height: 100%;
+  top: 40px;
+  background-color: red;
 }
-p{
-    font-size: 28px;
+
+p {
+  font-size: 28px;
 }
 </style>
